@@ -75,7 +75,7 @@
   :straight (:type built-in)
   :config
   (setq electric-pair-inhibit-predicate
-        `(lambda (c)
+        `(lambda (c)q
            (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
   (setq electric-pair-pairs '(
                               (?\{ . ?\})
@@ -88,31 +88,17 @@
 ;;; Smartparens
 
 (use-package smartparens
-  :hook ((lisp-interaction-mode
-          scheme-mode)
-         . smartparens-mode)
+  :hook (markdown-mode
+         lisp-interaction-mode
+         eval-expression-minibuffer-setup
+         slime-repl-mode)
   :bind
   (:map smartparens-mode-map
-        ("M-["           . sp-backward-slurp-sexp)
-        ("M-]"           . sp-forward-slurp-sexp)
-        ("M-{"           . sp-backward-barf-sexp)
-        ("M-}"           . sp-forward-barf-sexp)
-        ("M-U"           . sp-raise-sexp)
-        ("M-R"           . raise-sexp)
-        ("M-C"           . sp-convolute-sexp)
-        ("M-D"           . my/sp-duplicate-sexp)
-        ("M-J"           . sp-join-sexp)
-        ("M-S"           . sp-split-sexp)
-        ("C-M-<up>"      . sp-raise-sexp)
-        ("C-<right>"     . sp-forward-slurp-sexp)
-        ("C-<left>"      . sp-backward-slurp-sexp)
-        ("M-<right>"     . sp-forward-barf-sexp)
-        ("M-<left>"      . sp-backward-barf-sexp)
-        ("M-K"           . sp-kill-hybrid-sexp)
-        ("C-x C-t"       . sp-transpose-hybrid-sexp)
-        ("C-M-n"         . sp-next-sexp)
-        ("C-M-p"         . sp-previous-sexp)
-        ("C-<backspace>" . sp-backward-kill-word))
+        ("C-c (" . sp-wrap-round)
+        ("C-c [" . sp-wrap-square)
+        ("C-c {" . sp-wrap-curly)
+        ("C-c )" . sp-unwrap-sexp)
+        ("C-c t" . sp-transpose-sexp))
   :init
   (add-hook 'smartparens-enabled-hook
             (lambda ()
@@ -123,57 +109,7 @@
               "Enable \\[electric-pair-mode] when \[[smartparens-mode]] is disabled."
               (electric-pair-local-mode +1)))
   :config
-  ;; Repeat actions
-  ;; Scratch buffer for: emacs-lisp-mode
-
-  (defun my/sp-duplicate-sexp (&optional arg)
-    (interactive "p")
-    (insert (buffer-substring
-             (save-excursion
-               (backward-sexp)
-               (point))
-             (point))))
-
-  (defvar lisp-navigation-map
-    (let ((map (make-sparse-keymap)))
-      (pcase-dolist (`(,k . ,f)
-                     '(("u" . backward-up-list)
-                       ("f" . forward-sexp)
-                       ("b" . backward-sexp)
-                       ("d" . down-list)
-                       ("n" . sp-next-sexp)
-                       ("p" . sp-previous-sexp)
-                       ("k" . sp-kill-sexp)
-                       ("K" . sp-kill-hybrid-sexp)
-                       ("]" . sp-forward-slurp-sexp)
-                       ("[" . sp-backward-slurp-sexp)
-                       ("}" . sp-forward-barf-sexp)
-                       ("{" . sp-backward-barf-sexp)
-                       ("r" . raise-sexp)
-                       (";" . sp-comment)
-                       ("C" . sp-convolute-sexp)
-                       ("D" . my/sp-duplicate-sexp)
-                       ("J" . sp-join-sexp)
-                       ("S" . sp-split-sexp)
-                       ("R" . sp-raise-sexp)
-                       ("\\" . indent-region)
-                       ("t" . transpose-sexps)
-                       ("x" . eval-defun)
-                       ("e" . eval-last-sexp)))
-        (define-key map (kbd k) f))
-      map))
-
-  (map-keymap
-   (lambda (_ cmd)
-     (put cmd 'repeat-map 'lisp-navigation-map))
-   lisp-navigation-map)
-  (put 'kill-sexp 'repeat-map 'lisp-navigation-map)
-
-  ;; (require 'smartparens-config)
-  (sp-with-modes sp-lisp-modes
-    ;; disable ', it's the quote character!
-    ;; (sp-local-pair "`" "'")
-    (sp-local-pair "'" nil :actions nil)))
+  (require 'smartparens-config))
 
 ;;; Multiple-Cursors
 
@@ -198,7 +134,7 @@
 
 ;;; Aggressive-Indent
 
-(use-package aggressive-indent)
+(use-package aggressive-indent :defer 5)
 
 ;; Ws-Butler
 
