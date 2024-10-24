@@ -50,6 +50,42 @@
 ;; (put 'next-buffer 'repeat-map 'jh-buffer-map)
 ;; (put 'previous-buffer 'repeat-map 'jh-buffer-map)
 
+(with-no-warnings
+  (pretty-hydra-define window-hydra
+    (:title "Window" :color pink :quit-key ("q" "C-g"))
+    ("Resize"
+     (("h" shrink-window-horizontally "←")
+      ("j" enlarge-window "↓")
+      ("k" shrink-window "↑")
+      ("l" enlarge-window-horizontally "→")
+      ("|" balance-windows "balance"))
+     "Zoom"
+     (("+" text-scale-increase "in")
+      ("=" text-scale-increase "in")
+      ("-" text-scale-decrease "out")
+      ("0" (text-scale-increase 0) "reset")))))
+
+(defvar-keymap jh-window-map
+  :doc "Window related commands"
+  :prefix 'ctl-z-w
+  "u" (cons "Undo" 'winner-undo)
+  "r" (cons "Redo" 'winner-redo)
+  "b" (cons "Balans =|=" 'balance-windows-area)
+  "d" (cons "Toggle dedicated" 'toggle-window-dedicated)
+  "!" (cons "Delete other vert" 'delete-other-windows-vertically)
+  "@" (cons "Split root below" 'split-root-window-below)
+  "#" (cons "Split root right" 'split-root-window-right)
+  "^" (cons "Tear off" 'tear-off-window)
+  "h" (cons "Move <-" 'windmove-left)
+  "j" (cons "Move v" 'windmove-down)
+  "k" (cons "Move ^" 'windmove-up)
+  "l" (cons "Move ->" 'windmove-right)
+  "H" (cons "Swap <-" 'windmove-swap-states-left)
+  "J" (cons "Swap v" 'windmove-swap-states-down)
+  "K" (cons "Swap ^" 'windmove-swap-states-up)
+  "L" (cons "Swap ->" 'windmove-swap-states-right)
+  "z" (cons "Window hydra" 'window-hydra/body))
+
 (defvar-keymap jh-goto-map
   :doc "Keymap for goto."
   :prefix 'ctl-z-g
