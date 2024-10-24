@@ -45,18 +45,6 @@
                  save-interprogram-paste-before-kill t
                  repeat-mode 1))
 
-
-;;; No-Littering
-
-(use-package no-littering
-  :demand t
-  :config
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (setq backup-directory-alist
-        `((".*" . ,(no-littering-expand-var-file-name "backup/")))))
-
 ;;; Source all config modules
 
 ;;; Core source directories for init.el

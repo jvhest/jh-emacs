@@ -31,7 +31,21 @@
 (defconst ON-BSD     (or ON-MAC (eq system-type 'berkeley-unix)))
 (defconst ON-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 
+;;; No-Littering
+
+(use-package no-littering
+  :demand t
+  :config
+  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (setq backup-directory-alist
+        `((".*" . ,(no-littering-expand-var-file-name "backup/")))))
+
+;;; Start loading config
+
 (require 'jh-core (expand-file-name "jh-core/jh-core.el" user-emacs-directory))
+
 
 (let ((jh-info-dir (expand-file-name "docs/dir" user-emacs-directory)))
   (when (file-exists-p jh-info-dir)
