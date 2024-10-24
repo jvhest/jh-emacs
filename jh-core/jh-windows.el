@@ -8,7 +8,7 @@
 ;; Modules for init.el.
 
 ;;; Code:
-(message "windows")
+
 
 (use-package emacs
   :init
@@ -52,6 +52,8 @@
   (winner-mode 1))
 
 (defun display-right-side (&rest re-list)
+    "Add windows to `display-buffer-alist'.
+Windows based on RE-LIST regexs position to right-side."
   (dolist (re re-list)
     (add-to-list 'display-buffer-alist
                  (cons re '((display-buffer-in-side-window)
@@ -60,15 +62,11 @@
                             (window-width . 0.45)
                             (inhibit-same-window . t)
                             (window-parameters
-                             (no-delete-other-windows . t)))))))
-
-(display-right-side "\\*info.*"
-                    "\\*Help.*"
-                    "\\*Custom.*"
-                    "\\*Python\\*"
-                    "\\*Racket REPL.*")
+                             (no-other-windows . t)))))))
 
 (defun display-top-side (&rest re-list)
+    "Add windows to `display-buffer-alist'.
+Windows based on RE-LIST regexs position to top-side."
   (dolist (re re-list)
     (add-to-list 'display-buffer-alist
                  (cons re '((display-buffer-in-side-window)
@@ -78,9 +76,9 @@
                             (window-parameters
                              (no-other-window . t)))))))
 
-(display-top-side "\\*Flycheck.*")
-
 (defun display-bottom-side (&rest re-list)
+    "Add windows to `display-buffer-alist'.
+Windows based on RE-LIST regexs position to bottom-side."
   (dolist (re re-list)
     (add-to-list 'display-buffer-alist
                  (cons re '((display-buffer-in-side-window)
@@ -90,6 +88,17 @@
                             (window-parameters
                              (no-other-window . t)))))))
 
+
+;;; Assign windows to specific position
+
+(display-right-side "\\*info.*"
+                    "\\*Help.*"
+                    "\\*Custom.*"
+                    "\\*Python\\*"
+                    "\\*Racket REPL.*")
+
+(display-top-side "\\*Flycheck.*")
+
 (display-bottom-side "\\*Messages.*"
                      "^\\(\\*e?shell\\|vterm\\).*"
                      "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
@@ -97,87 +106,9 @@
                      ".*\\*\\(Completions\\|Embark Live Occur\\).*"
                      "\\*Embark Occur.*")
 
-;; (add-to-list 'display-buffer-alist
-;; '("\\*Messages.*"
-;;   (display-buffer-in-side-window)
-;;   (side . top)
-;;   (slot . 1)
-;;   (window-height . 0.16)
-;;   (window-parameters
-;;    (no-other-window . t))))
 
-;; (add-to-list 'display-buffer-alist
-;; '("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-;;   (display-buffer-in-side-window)
-;;   (side . top)
-;;   (slot . 2)
-;;   (window-height . 0.16)
-;;   (window-parameters
-;;    (no-other-window . t))))
+;;; Popper
 
-;; (add-to-list 'display-buffer-alist
-;; '("\\*\\(Output\\|Register Preview\\).*"
-;;   (display-buffer-in-side-window)
-;;   (side . bottom)
-;;   (slot . -1)
-;;   (window-width . 0.16)
-;;   (window-parameters
-;;    (no-other-window . t))))
-
-;; (add-to-list 'display-buffer-alist
-;; '(".*\\*\\(Completions\\|Embark Live Occur\\).*"
-;;   (display-buffer-in-side-window)
-;;   (side . bottom)
-;;   (slot . 0)
-;;   (window-height . 0.16)
-;;   (window-parameters
-;;    (no-other-window . t))))
-
-;; (add-to-list 'display-buffer-alist
-;; '("^\\(\\*e?shell\\|vterm\\).*"
-;;   (display-buffer-in-side-window)
-;;   (side . bottom)
-;;   (slot . 1)
-;;   (window-height . 0.16)))
-
-;; (add-to-list 'display-buffer-alist
-;;  '("\\*info\\*"
-;;    (display-buffer-in-side-window)
-;;    (side . right)
-;;    (slot . 0)
-;;    (window-width . 45)
-;;    (window-parameters
-;;    (no-delete-other-windows . t))))
-
-;;  (add-to-list 'display-buffer-alist
-;;  '("\\*Help.*"
-;;    (display-buffer-in-side-window)
-;;    (side . left)
-;;    (slot . 0)
-;;    (window-width . 0.40)
-;;    (inhibit-same-window . t)
-;;    (window-parameters
-;;    (no-delete-other-window . t))))
-
-;;  (add-to-list 'display-buffer-alist
-;;  '("\\*Custom.*"
-;;    (display-buffer-in-side-window)
-;;    (side . right)
-;;    (slot . 1)
-;;    (window-width . 0.25)))
-
-;;  (add-to-list 'display-buffer-alist
-;;  '("\\*Racket REPL.*"
-;;    (display-buffer-in-side-window)
-;;    (side . right)
-;;    (slot . 1)
-;;    (window-width . 0.40)))
-
-;;  (add-to-list 'display-buffer-alist
-;;  '("\\*Embark Occur.*"
-;;    (display-buffer-at-bottom)))
-
-;; Enforce rules for popups
 (use-package popper
   :custom
   (popper-group-function #'popper-group-by-directory)
