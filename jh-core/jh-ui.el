@@ -185,9 +185,7 @@
 ;;; Which-Key
 
 (use-package which-key
-  :demand t
-  :init
-  (which-key-mode 1)
+  :hook (after-init . which-key-mode)
   :config
   (setq which-key-separator " → " )
   (setq which-key-unicode-correction 3)
@@ -202,6 +200,7 @@
 ;;; Pulse
 
 (use-package pulse
+  :disabled
   :preface
   (defun pulse-line (&rest _)
     "Pulse the current line."

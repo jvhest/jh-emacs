@@ -66,50 +66,27 @@
 
 (use-package paren
   :straight (:type built-in)
-  :init (setq show-paren-delay 0)
-  :config (show-paren-mode +1))
+  :commands (show-paren-mode)
+  :hook (prog-mode . show-paren-mode)
+  :config
+  (show-paren-mode +1)
+  (setq show-paren-highlight-openparen t        ;; Always show the matching parenthesis.
+        show-paren-delay 0
+        show-paren-when-point-inside-paren t))  ;; Show parenthesis when inside a block.
 
 ;;; Electric-Pair-Mode
 
 (use-package elec-pair
   :straight (:type built-in)
-  :config
-  (setq electric-pair-inhibit-predicate
-        `(lambda (c)q
-           (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
+  :config 
   (setq electric-pair-pairs '(
                               (?\{ . ?\})
                               (?\( . ?\))
                               (?\[ . ?\])
                               (?\" . ?\")
                               (?\< . ?\>)
-                              )))
-
-;;; Smartparens
-
-(use-package smartparens
-  :hook (markdown-mode
-         lisp-interaction-mode
-         eval-expression-minibuffer-setup
-         slime-repl-mode)
-  :bind
-  (:map smartparens-mode-map
-        ("C-c (" . sp-wrap-round)
-        ("C-c [" . sp-wrap-square)
-        ("C-c {" . sp-wrap-curly)
-        ("C-c )" . sp-unwrap-sexp)
-        ("C-c t" . sp-transpose-sexp))
-  :init
-  (add-hook 'smartparens-enabled-hook
-            (lambda ()
-              "Disable \\[electric-pair-mode] when \[[smartparens-mode]] is enabled."
-              (electric-pair-local-mode -1)))
-  (add-hook 'smartparens-disabled-hook
-            (lambda ()
-              "Enable \\[electric-pair-mode] when \[[smartparens-mode]] is disabled."
-              (electric-pair-local-mode +1)))
-  :config
-  (require 'smartparens-config))
+                              ))
+  (electric-pair-mode t))
 
 ;;; Multiple-Cursors
 
@@ -119,6 +96,7 @@
   ("C->" . mc/mark-next-like-this)
   ("C-<" . mc/mark-previous-like-this)
   ("C-c C-<" . mc/mark-all-like-this)
+
   ("C-\"" . mc/skip-to-next-like-this)
   ("C-:" . mc/skip-to-previous-like-this))
 
@@ -134,7 +112,9 @@
 
 ;;; Aggressive-Indent
 
-(use-package aggressive-indent :defer 5)
+(use-package aggressive-indent
+  :defer 5
+  :hook ((emacs-lisp-mode lisp-mode) . aggressive-indent-mode))
 
 ;; Ws-Butler
 
@@ -156,14 +136,6 @@
 
 (use-package yasnippet-snippets
   :after yasnippet)
-
-(defvar-keymap jh-snippet-map
-  :doc "Snippets related commands"
-  "c" (cons "Create" 'yas-new-snippet)
-  "e" (cons "Expand" 'yas-expand)
-  "i" (cons "Insert" 'yas-insert-snippet)
-  "r" (cons "Reload" 'yas-reload-all)
-  "v" (cons "Edit" 'yas-visit-snippet-file))
 
 (provide 'jh-editor)
 ;;; jh-editor.el ends here

@@ -15,7 +15,7 @@
 (use-package eldoc
   :straight (:type built-in)
   :diminish
-  :hook ((emacs-lisp-mode python-mode) . eldoc-mode)
+  :hook (emacs-lisp-mode python-mode)
   :config
   (use-package eldoc-box
     :diminish (eldoc-box-hover-mode eldoc-box-hover-at-point-mode)

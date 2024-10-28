@@ -1,5 +1,4 @@
 ;;; jh-minibuffer.el --- Emacs configuration      -*- lexical-binding: t; -*-
-(message "minibuffer")
 
 ;; Maintainer: Jan van Hest
 ;; Email: jan.vanhest@gmail.com
@@ -10,7 +9,20 @@
 
 ;;; Code:
 
+;;; Isearch
 
+;; (use-package isearch
+;;   :straight (:type built-in)
+;;   :config
+;;   (progn
+;;     (setq search-whitespace-regexp ".*?"
+;;           isearch-lax-whitespace t
+;;           isearch-regexp-lax-whitespace nil
+;;           isearch-lazy-highlight t
+;;           search-lazy-count t
+;;           lazy-count-prefix-format "(%s/%s) "
+;;           lazy-count-suffix-format nil)))
+;;
 ;;; Vertico
 
 (use-package vertico
@@ -85,14 +97,14 @@
          ("M-g f"   . consult-flymake)             ;; Alternative: consult-flycheck
          ("M-g g"   . consult-goto-line)           ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o"   . consult-outline)             ;; Alternative: consult-org-heading
+         ("M-g o"   . consult-outline)             ;; Alternative: consult-org-headingq
          ("M-g m"   . consult-mark)
          ("M-g k"   . consult-global-mark)
          ("M-g i"   . consult-imenu)
          ("M-g I"   . consult-imenu-multi)
 
          ;; M-s bindings in `search-map'
-         ("M-s d"   . consult-find)      ;; M-s f ????
+         ("M-s d"   . consult-find)
          ("M-s D"   . consult-locate)
          ("M-s g"   . consult-grep)
          ("M-s G"   . consult-git-grep)

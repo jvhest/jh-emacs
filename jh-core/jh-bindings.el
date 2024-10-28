@@ -8,7 +8,7 @@
 ;; Modules for init.el.
 
 ;;; Code:
-(message "keys")
+
 
 ;;; Keybindings
 
@@ -39,9 +39,12 @@
 (bind-key "M-l" 'downcase-dwim)
 (bind-key "M-c" 'capitalize-dwim)
 
+
+;;; s-z keymap
+
 (defvar-keymap jh-buffer-map
   :doc "Buffer related commands."
-  :prefix 'ctl-z-b
+  :prefix 's-z-b
   "c" (cons "" #'clone-indirect-buffer-other-window)
   "f" (cons "Fit to window" #'fit-window-to-buffer)
   "g" (cons "Revert buffer" #'revert-buffer-quick)
@@ -67,7 +70,7 @@
 
 (defvar-keymap jh-window-map
   :doc "Window related commands"
-  :prefix 'ctl-z-w
+  :prefix 's-z-w
   "u" (cons "Undo" 'winner-undo)
   "r" (cons "Redo" 'winner-redo)
   "b" (cons "Balans =|=" 'balance-windows-area)
@@ -88,31 +91,32 @@
 
 (defvar-keymap jh-goto-map
   :doc "Keymap for goto."
-  :prefix 'ctl-z-g
-  "e" (cons "Compile errors" #'consult-compile-error)
-  "f" (cons "Flycheck errors" #'consult-flycheck)
-  "g" (cons "Goto linenumber" #'consult-goto-line)
-  "o" (cons "Org headings" #'consult-outline)
-  "m" (cons "Mark" #'consult-mark)
-  "k" (cons "Global mark" #'consult-global-mark)
-  "i" (cons "Imenu" #'consult-imenu)
-  "I" (cons "Imenu multi" #'consult-imenu-multi))
+  :prefix 's-z-g
+  "e" (cons "Compile errors [M-g e]" #'consult-compile-error)
+  "f" (cons "Flycheck errors [M-g f]" #'consult-flycheck)
+  "g" (cons "Goto linenumber [M-g l]" #'consult-goto-line)
+  "o" (cons "Org headings [M-g o]" #'consult-outline)
+  "m" (cons "Mark [M-g m]" #'consult-mark)
+  "k" (cons "Global mark [M-g k]" #'consult-global-mark)
+  "i" (cons "Imenu [M-g i]" #'consult-imenu)
+  "I" (cons "Imenu multi [M-g I]" #'consult-imenu-multi))
 
 (defvar-keymap jh-search-map
   :doc "Keymap for search."
-  :prefix 'ctl-z-s
-  "a" (cons "Agenda" #'consult-org-agenda)
-  "g" (cons "Grep" #'consult-grep)
-  "r" (cons "Ripgrep" #'consult-ripgrep)
-  "f" (cons "Filenames" #'consult-find)
-  "o" (cons "Outline" #'consult-outline)
-  "l" (cons "Search-buffer" #'consult-line)
-  "d" (cons "Directory" #'consult-dir)
-  "h" (cons "History" #'consult-history))
+  :prefix 's-z-s
+  "a" (cons "Agenda [M-s M-a]" #'consult-org-agenda)
+  "g" (cons "Grep [M-s g]" #'consult-grep)
+  "r" (cons "Ripgrep [M-s r]" #'consult-ripgrep)
+  "f" (cons "Filenames [M-s d]" #'consult-find)
+  "l" (cons "Isearch-buffer [M-s l]" #'consult-line)
+  "L" (cons "Isearch-buffer multi [M-s L]" #'consult-line-multi)
+  "d" (cons "Directory [C-x F]" #'consult-dir)
+  "h" (cons "History [C-c h]" #'consult-history)
+  "i" (cons "Isearch history [M-s e]" #'consult-isearch-history))
 
 (defvar-keymap jh-sexp-eval-map
   :doc "Evaluate s-expression."
-  :prefix 'ctl-z-e
+  :prefix 's-z-e
   "b" (cons "Eval buffer" #'eval-buffer)
   "d" (cons "Eval defun" #'eval-defun)
   "r" (cons "Eval region" #'eval-region)
@@ -135,7 +139,7 @@
 
 (defvar-keymap jh-sexp-motion-map
   :doc "Structured movement s-expressions."
-  :prefix 'ctl-z-x
+  :prefix 's-z-x
   "a" (cons "Start defun" #'beginning-of-defun)
   "e" (cons "End defun" #'end-of-defun)
   "n" (cons "List ->" #'forward-list)
@@ -146,10 +150,18 @@
 
 (defvar-keymap jh-file-map
   :doc "File related commands."
-  :prefix 'ctl-z-f
+  :prefix 's-z-f
   "b" (cons "Bookmark jump" #'bookmark-jump)
   "l" (cons "Find library" #'find-library)
   "m" (cons "Manual" #'consult-man))
+
+(defvar-keymap jh-snippet-map
+  :doc "Snippets related commands"
+  "c" (cons "Create" 'yas-new-snippet)
+  "e" (cons "Expand" 'yas-expand)
+  "i" (cons "Insert" 'yas-insert-snippet)
+  "r" (cons "Reload" 'yas-reload-all)
+  "v" (cons "Edit" 'yas-visit-snippet-file))
 
 (with-no-warnings
   (pretty-hydra-define toggles-hydra
@@ -189,10 +201,10 @@
       ("M" diff-hl-margin-mode "margin gutter" :toggle t)
       ("D" diff-hl-dired-mode "dired gutter" :toggle t)))))
 
-;; `prefix-ctrl-z-map'
-(defvar-keymap jh-ctrl-z-map
+;; `prefix-s-z-map'
+(defvar-keymap jh-z-map
   :doc "Prefix keymap with multiple subkeymaps."
-  :prefix 'ctrl-z
+  :prefix 's-z
   "b" (cons "Buffer" jh-buffer-map)
   "c" (cons "Clock" #'world-clock)
   "e" (cons "Sexp eval" jh-sexp-eval-map)
@@ -200,17 +212,28 @@
   "g" (cons "Goto" jh-goto-map)
   "m" (cons "Magit" #'magit-status)
   "n" (cons "Narrow" narrow-map)
-  "o" (cons "Org-hydra" #'org-hydra/body)
   "r" (cons "Registers" ctl-x-r-map)
   "s" (cons "Search" jh-search-map)
-  "t" (cons "Toggles" #'toggles-hydra/body)
   "u" (cons "Universal-arg" #'universal-argument)
   "v" (cons "Version Control" 'vc-prefix-map)
   "w" (cons "Window" jh-window-map)
   "x" (cons "Sexp motions" jh-sexp-motion-map)
   "y" (cons "Snippet" jh-snippet-map))
 
-(keymap-set global-map "C-z" jh-ctrl-z-map)
+(keymap-set global-map "s-z" jh-z-map)
+
+;;; Hydra-map
+
+;; `prefix-s-h-map'
+(defvar-keymap jh-h-map
+  :doc "Prefix keymap with multiple subkeymaps."
+  :prefix 's-h
+  "o" (cons "Org-hydra" #'org-hydra/body)
+  "s" (cons "Smartparens" #'sexp-motion-hydra/body)
+  "t" (cons "Toggles" #'toggles-hydra/body)
+  "w" (cons "Windows" #'window-hydra/body))
+
+(keymap-set global-map "s-h" jh-h-map)
 
 (provide 'jh-bindings)
 ;;; jh-bindings.el ends here
