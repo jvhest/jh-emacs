@@ -76,7 +76,6 @@
 (require 'jh-projects)
 (require 'jh-minibuffer)
 (require 'jh-completion)
-(require 'jh-git)
 (require 'jh-bindings)
 
 ;;;; Load modules configuration files
