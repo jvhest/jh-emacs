@@ -10,61 +10,53 @@
 ;;; Code:
 
 
+(setq switch-to-buffer-obey-display-actions t)
 
-(defun display-right-side (&rest re-list)
-    "Add windows to `display-buffer-alist'.
-Windows based on RE-LIST regexs position to right-side."
-  (dolist (re re-list)
-    (add-to-list 'display-buffer-alist
-                 (cons re '((display-buffer-in-side-window)
-                            (side . right)
-                            (slot . 0)
-                            (window-width . 0.45)
-                            (inhibit-same-window . t)
-                            (window-parameters
-                             (no-other-windows . t)))))))
+;; see doc buffer-math-p
 
-(defun display-top-side (&rest re-list)
-    "Add windows to `display-buffer-alist'.
-Windows based on RE-LIST regexs position to top-side."
-  (dolist (re re-list)
-    (add-to-list 'display-buffer-alist
-                 (cons re '((display-buffer-in-side-window)
-                            (side . top)
-                            (slot . 0)
-                            (window-height . 0.20)
-                            (window-parameters
-                             (no-other-window . t)))))))
+(defun get-buffer-major-mode ()
+  "Get major-mode name of current buffer."
+  (buffer-local-value 'major-mode (current-buffer)))
 
-(defun display-bottom-side (&rest re-list)
-    "Add windows to `display-buffer-alist'.
-Windows based on RE-LIST regexs position to bottom-side."
-  (dolist (re re-list)
-    (add-to-list 'display-buffer-alist
-                 (cons re '((display-buffer-in-side-window)
-                            (side . bottom)
-                            (slot . 0)
-                            (window-height . 0.20)
-                            (window-parameters
-                             (no-other-window . t)))))))
+;; display on right-side.
+(add-to-list 'display-buffer-alist
+             '((or (major-mode . Info-mode)
+                   (major-mode . helpful-mode))
+               (display-buffer-in-side-window)
+               (side . right)
+               (slot . 0)
+               (window-width . 0.45)
+               (inhibit-same-window . t)
+               (window-parameters
+                (no-other-windows . t))))
 
+;; display at top
+(add-to-list 'display-buffer-alist
+             '((or "\\*Flycheck.*")
+               (display-buffer-in-side-window)
+               (side . top)
+               (slot . 0)
+               (window-height . 0.20)
+               (inhibit-same-window . t)
+               (window-parameters
+                (no-other-windows . t))))
 
-;;; Assign windows to specific position
-
-(display-right-side "\\*info.*"
-                    "\\*Help.*"
-                    "\\*Custom.*"
-                    "\\*Python\\*"
-                    "\\*Racket REPL.*")
-
-(display-top-side "\\*Flycheck.*")
-
-(display-bottom-side "\\*Messages.*"
-                     "^\\(\\*e?shell\\|vterm\\).*"
-                     "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-                     "\\*\\(Output\\|Register Preview\\).*"
-                     ".*\\*\\(Completions\\|Embark Live Occur\\).*"
-                     "\\*Embark Occur.*")
+;; display at bottom
+(add-to-list 'display-buffer-alist
+             '((or (major-mode . dired-mode)
+                   "\\*Messages.*"
+                   "^\\(\\*e?shell\\|vterm\\).*"
+                   "\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+                   "\\*\\(Output\\|Register Preview\\).*"
+                   ".*\\*\\(Completions\\|Embark Live Occur\\).*"
+                   "\\*Embark Occur.*")
+               (display-buffer-in-side-window)
+               (side . bottom)
+               (slot . 0)
+               (window-height . 0.30)
+               (inhibit-same-window . t)
+               (window-parameters
+                (no-other-windows . t))))
 
 
 ;;; Popper
@@ -100,6 +92,7 @@ Windows based on RE-LIST regexs position to bottom-side."
           help-mode helpful-mode
           tabulated-list-mode
           Buffer-menu-mode
+          dired-mode
 
           flycheck-error-list-mode
           flycheck-verify-mode
@@ -145,14 +138,19 @@ Windows based on RE-LIST regexs position to bottom-side."
                     (propertize " POP " 'face face)))))
   :config
   (setq popper-display-control nil)
+
+  ;; group by project.el project root, with fall back to default-directory
+  (setq popper-group-function #'popper-group-by-directory)
+
   (with-no-warnings
-    (defun my-popper-fit-window-height (win)
-      "Determine the height of popup window WIN by fitting it to the buffer's content."
-      (fit-window-to-buffer
-       win
-       (floor (frame-height) 3)
-       (floor (frame-height) 3)))
-    (setq popper-window-height #'my-popper-fit-window-height)
+    ;; (defun my-popper-fit-window-height (win)
+    ;;   "Determine the height of popup window WIN by fitting it to the buffer's content."
+    ;;   (fit-window-to-buffer
+    ;;    win
+    ;;    (floor (frame-height) 3)
+    ;;    (floor (frame-height) 3)))
+    ;; (setq popper-window-height #'my-popper-fit-window-height)
+
 
     (defun popper-close-window-hack (&rest _)
       "Close popper window via `C-g'."
