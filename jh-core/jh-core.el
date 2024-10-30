@@ -53,6 +53,7 @@
 (defvar org-source-dir (expand-file-name "jh-org/" user-emacs-directory))
 (defvar utils-source-dir (expand-file-name "jh-utils/" user-emacs-directory))
 (defvar lisp-source-dir (expand-file-name "site-lisp/" user-emacs-directory))
+(defvar themes-dir (expand-file-name "themes/" user-emacs-directory))
 
 ;;; Create list for source dirs
 (defvar source-dirs (list core-source-dir
@@ -61,10 +62,11 @@
                           utils-source-dir
                           lisp-source-dir))
 
-;;; Add all source-dirs to load-path
+;;; Add all source and theme dirs to load-path
 (eval-and-compile
   (dolist (dir source-dirs)
-    (add-to-list 'load-path dir t)))
+    (add-to-list 'load-path dir t))
+  (add-to-list 'custom-theme-load-path themes-dir))
 
 ;;; Load core configuration files
 (require 'jh-ui)

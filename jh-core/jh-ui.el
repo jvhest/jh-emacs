@@ -97,15 +97,14 @@
   (with-eval-after-load 'posframe
     (defun hydra-set-posframe-show-params ()
       "Set hydra-posframe style."
-      (setq hydra-posframe-show-params
-            `(:left-fringe 8
-                           :right-fringe 8
-                           :internal-border-width 2
-                           ;; :internal-border-color ,(face-background 'posframe-border nil t)
-                           :background-color ,(face-background 'tooltip nil t)
-                           :foreground-color ,(face-foreground 'tooltip nil t)
-                           :lines-truncate t
-                           :poshandler posframe-poshandler-frame-bottom-center)))
+      (setq hydra-posframe-show-params `(
+                                         :left-fringe 8
+                                         :right-fringe 8
+                                         :internal-border-width 2
+                                         :background-color ,(face-background 'tooltip nil t)
+                                         :foreground-color ,(face-foreground 'tooltip nil t)
+                                         :lines-truncate t
+                                         :poshandler posframe-poshandler-frame-bottom-center)))
     (hydra-set-posframe-show-params)
     (add-hook 'after-load-theme-hook #'hydra-set-posframe-show-params t)))
 
@@ -166,7 +165,7 @@
   :preface
   (defvar global-hi-line-sticky-flag nil)
   :init
-  (global-hl-line-mode))
+  (global-hl-line-mode -1))
 
 ;;; Helpful
 
