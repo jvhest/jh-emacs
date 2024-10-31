@@ -21,7 +21,8 @@
 ;; display on right-side.
 (add-to-list 'display-buffer-alist
              '((or (major-mode . Info-mode)
-                   (major-mode . helpful-mode))
+                   (major-mode . helpful-mode)
+                   (major-mode . occur-mode))
                (display-buffer-in-side-window)
                (side . right)
                (slot . 0)
@@ -93,6 +94,7 @@
           tabulated-list-mode
           Buffer-menu-mode
           dired-mode
+          occur-mode
 
           flycheck-error-list-mode
           flycheck-verify-mode
