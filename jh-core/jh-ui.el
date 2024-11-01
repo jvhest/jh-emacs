@@ -60,15 +60,18 @@
   (global-prettify-symbols-mode t)   ;; Enables us to use ligatures in Emacs.
 
   ;; frame settings
-  (set-frame-parameter nil 'alpha '(100 100))
+  ;; activate transparency on startup
+  (set-frame-parameter nil 'alpha
+                       `(,my/frame-transparency
+                         ,my/frame-transparency))
   (setq frame-title-format '("%b")
         frame-resize-pixelwise t
         frame-inhibit-implied-resize t)
 
   (setq ring-bell-function #'ignore
         visible-bell nil
-        use-short-answers t                ;; Use "y" and "n" answers
-        auto-window-vscroll nil)            ;; Make scrolling less stuttered
+        use-short-answers t        ;; Use "y" and "n" answers
+        auto-window-vscroll nil)   ;; Make scrolling less stuttered
 
   (blink-cursor-mode -1)
   (tooltip-mode -1))
