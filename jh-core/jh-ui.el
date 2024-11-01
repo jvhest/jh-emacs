@@ -154,9 +154,8 @@
 ;;; Hl-Line
 
 (use-package hl-line
-  :preface
+  :config
   (defvar global-hi-line-sticky-flag nil)
-  :init
   (global-hl-line-mode -1))
 
 ;;; Helpful
