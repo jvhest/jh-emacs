@@ -109,9 +109,8 @@
 
 (use-package ef-themes
   :demand t
-  :bind ("<f9>" . ef-themes-toggle)
   :init
-  (setq ef-themes-to-toggle '(ef-owl ef-deuteranopia-light))   ;;  '(ef-trio-dark ef-trio-light))
+  (setq ef-themes-to-toggle '(ef-owl ef-kassio))  ;;ef-maris-light))  ;; ef-kassio (alt. for light)
   :config
   (setq ef-themes-headings
         '((0 . (1.35))
@@ -121,7 +120,7 @@
           (4 . (1.14))
           (t . (1.1)))))
 ;; Disable all other themes to avoid awkward blending:
-;; (mapc #'disable-theme custom-enabled-themes)
+(mapc #'disable-theme custom-enabled-themes)
 (load-theme (car ef-themes-to-toggle) t)
 
 (use-package doom-modeline
