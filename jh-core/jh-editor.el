@@ -78,7 +78,7 @@
 
 (use-package elec-pair
   :straight (:type built-in)
-  :config 
+  :config
   (setq electric-pair-pairs '(
                               (?\{ . ?\})
                               (?\( . ?\))
@@ -136,6 +136,60 @@
 
 (use-package yasnippet-snippets
   :after yasnippet)
+
+;;; Toggles-Hydra
+
+(use-package emacs
+  :straight (:type built-in)
+  :preface
+  (defun toggle-line-numbers ()
+    "Toggle-line-numbers on/off."
+    (cond ((fboundp 'display-line-numbers-mode)
+           (display-line-numbers-mode (if display-line-numbers-mode -1 1)))
+          ((fboundp 'global-linum-mode)
+           (global-linum-mode (if global-linum-mode -1 1)))))
+
+  (defun toggle-transparency ()
+    "Toggle theme's transparency."
+    (let ((frame-alpha (frame-parameter nil 'alpha)))
+      (if (or (not frame-alpha)
+              (= (cadr frame-alpha) 100))
+          (set-frame-parameter nil 'alpha
+                               `(,my/frame-transparency
+                                 ,my/frame-transparency))
+        (set-frame-parameter nil 'alpha '(100 100)))))
+
+  :bind ("<f9>" . toggles-hydra/body)
+  :config
+  (pretty-hydra-define toggles-hydra
+    (:title "Toggles" :color amaranth :quit-key ("q" "C-g"))
+    ("Basic"
+     (("n" (toggle-line-numbers) "line number")
+      ("a" global-aggressive-indent-mode "aggressive indent" :toggle t)
+      ("c" flyspell-mode "spell check" :toggle t)
+      ("e" ef-themes-toggle "ef-themes")
+      ("s" prettify-symbols-mode "pretty symbol" :toggle t)
+      ("t" toggle-truncate-lines "truncate lines" :toggle t)
+      ("T" (toggle-transparency) "transparency")
+      ("v" variable-pitch-mode "variable pitch" :toggle t))
+     "Highlight"
+     (("l" global-hl-line-mode "line" :toggle t)
+      ("p" show-paren-mode "paren" :toggle t)
+      ("S" symbol-overlay-mode "symbol" :toggle t)
+      ("w" (setq-default show-trailing-whitespace (not show-trailing-whitespace))
+       "whitespace" :toggle show-trailing-whitespace)
+      ("h" global-hl-todo-mode "hl-todo" :toggle t))
+     "Program"
+     (("f" flycheck "flycheck" :toggle t)
+      ("O" hs-minor-mode "hideshow" :toggle t)
+      ("u" subword-mode "subword" :toggle t)
+      ("W" which-function-mode "which function" :toggle t)
+      ("E" toggle-debug-on-error "debug on error" :toggle (default-value 'debug-on-error))
+      ("Q" toggle-debug-on-quit "debug on quit" :toggle (default-value 'debug-on-quit))
+      ("v" global-diff-hl-mode "gutter" :toggle t)
+      ("V" diff-hl-flydiff-mode "live gutter" :toggle t)
+      ("M" diff-hl-margin-mode "margin gutter" :toggle t)
+      ("D" diff-hl-dired-mode "dired gutter" :toggle t)))))
 
 (provide 'jh-editor)
 ;;; jh-editor.el ends here

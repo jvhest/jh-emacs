@@ -88,7 +88,12 @@
   :hook ((markdown-mode . toc-org-mode)
          (org-mode . toc-org-enable)))
 
-(with-no-warnings
+;;; Org-Hydra
+
+(use-package emacs
+  :straight (:type built-in)
+  :bind ("C-<f9>" . winodw-hydra/body)
+  :config
   (pretty-hydra-define org-hydra
     (:title "ORG-BINDINGS" :color pink :quit-key ("q" "C-g"))
     ("Headings"
@@ -109,8 +114,7 @@
      (("m e" org-export-dispatch "Export dispatch")
       ("m i" org-toggle-item "Toggle item")
       ("m t" org-todo "Todo")
-      ("m B" org-babel-tangle "Babel tangle")
-      ("m T" org-todo-list "Todo list")))))
+      ("m B" org-babel-tangle "Babel tangle")))))
 
 ;;; Load org config files
 

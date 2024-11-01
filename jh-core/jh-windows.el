@@ -176,6 +176,25 @@
 
 (winner-mode 1)
 
+;;; Window-Hydra
+
+(use-package emacs
+  :straight (:type built-in)
+  :bind ("S-<f9>" . winodw-hydra/body)
+  :config
+  (pretty-hydra-define window-hydra
+    (:title "Window" :color pink :quit-key ("q" "C-g"))
+    ("Resize"
+     (("h" shrink-window-horizontally "←")
+      ("j" enlarge-window "↓")
+      ("k" shrink-window "↑")
+      ("l" enlarge-window-horizontally "→")
+      ("|" balance-windows "balance"))
+     "Zoom"
+     (("+" text-scale-increase "in")
+      ("=" text-scale-increase "in")
+      ("-" text-scale-decrease "out")
+      ("0" (text-scale-increase 0) "reset")))))
 
 (provide 'jh-windows)
 ;;; jh-windows.el ends here

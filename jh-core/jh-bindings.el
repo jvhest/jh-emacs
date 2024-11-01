@@ -53,21 +53,6 @@
 ;; (put 'next-buffer 'repeat-map 'jh-buffer-map)
 ;; (put 'previous-buffer 'repeat-map 'jh-buffer-map)
 
-(with-no-warnings
-  (pretty-hydra-define window-hydra
-    (:title "Window" :color pink :quit-key ("q" "C-g"))
-    ("Resize"
-     (("h" shrink-window-horizontally "←")
-      ("j" enlarge-window "↓")
-      ("k" shrink-window "↑")
-      ("l" enlarge-window-horizontally "→")
-      ("|" balance-windows "balance"))
-     "Zoom"
-     (("+" text-scale-increase "in")
-      ("=" text-scale-increase "in")
-      ("-" text-scale-decrease "out")
-      ("0" (text-scale-increase 0) "reset")))))
-
 (defvar-keymap jh-window-map
   :doc "Window related commands"
   :prefix 's-z-w
@@ -163,44 +148,6 @@
   "r" (cons "Reload" 'yas-reload-all)
   "v" (cons "Edit" 'yas-visit-snippet-file))
 
-(with-no-warnings
-  (pretty-hydra-define toggles-hydra
-    (:title "Toggles" :color amaranth :quit-key ("q" "C-g"))
-    ("Basic"
-     (("n" (cond ((fboundp 'display-line-numbers-mode)
-                  (display-line-numbers-mode (if display-line-numbers-mode -1 1)))
-                 ((fboundp 'gblobal-linum-mode)
-                  (global-linum-mode (if global-linum-mode -1 1))))
-       "line number"
-       :toggle (or (bound-and-true-p display-line-numbers-mode)
-                   (bound-and-true-p global-linum-mode)))
-      ("a" global-aggressive-indent-mode "aggressive indent" :toggle t)
-      ("d" global-hungry-delete-mode "hungry delete" :toggle t)
-      ("c" flyspell-mode "spell check" :toggle t)
-      ("s" prettify-symbols-mode "pretty symbol" :toggle t)
-      ("l" global-page-break-lines-mode "page break lines" :toggle t)
-      ("m" doom-modeline-mode "modern mode-line" :toggle t)
-      ("t" toggle-truncate-lines "truncate lines" :toggle t)
-      ("v" variable-pitch-mode "variable pitch" :toglle t))
-     "Highlight"
-     (("h l" global-hl-line-mode "line" :toggle t)
-      ("h p" show-paren-mode "paren" :toggle t)
-      ("h s" symbol-overlay-mode "symbol" :toggle t)
-      ("h w" (setq-default show-trailing-whitespace (not show-trailing-whitespace))
-       "whitespace" :toggle show-trailing-whitespace)
-      ("h t" global-hl-todo-mode "todo" :toggle t))
-     "Program"
-     (("f" flycheck "flycheck" :toggle t)
-      ("O" hs-minor-mode "hideshow" :toggle t)
-      ("u" subword-mode "subword" :toggle t)
-      ("W" which-function-mode "which function" :toggle t)
-      ("E" toggle-debug-on-error "debug on error" :toggle (default-value 'debug-on-error))
-      ("Q" toggle-debug-on-quit "debug on quit" :toggle (default-value 'debug-on-quit))
-      ("v" global-diff-hl-mode "gutter" :toggle t)
-      ("V" diff-hl-flydiff-mode "live gutter" :toggle t)
-      ("M" diff-hl-margin-mode "margin gutter" :toggle t)
-      ("D" diff-hl-dired-mode "dired gutter" :toggle t)))))
-
 ;; `prefix-s-z-map'
 (defvar-keymap jh-z-map
   :doc "Prefix keymap with multiple subkeymaps."
@@ -221,19 +168,6 @@
   "y" (cons "Snippet" jh-snippet-map))
 
 (keymap-set global-map "s-z" jh-z-map)
-
-;;; Hydra-map
-
-;; `prefix-s-h-map'
-(defvar-keymap jh-h-map
-  :doc "Prefix keymap with multiple subkeymaps."
-  :prefix 's-h
-  "o" (cons "Org-hydra" #'org-hydra/body)
-  "s" (cons "Smartparens" #'sexp-motion-hydra/body)
-  "t" (cons "Toggles" #'toggles-hydra/body)
-  "w" (cons "Windows" #'window-hydra/body))
-
-(keymap-set global-map "s-h" jh-h-map)
 
 (provide 'jh-bindings)
 ;;; jh-bindings.el ends here
