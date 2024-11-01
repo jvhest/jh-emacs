@@ -196,18 +196,5 @@
   (setq which-key-max-description-length 40)
   (setq which-key-sort-order 'which-key-key-order-alpha))
 
-;;; Pulse
-
-(use-package pulse
-  :disabled
-  :preface
-  (defun pulse-line (&rest _)
-    "Pulse the current line."
-    (pulse-momentary-highlight-one-line (point)))
-  :config
-  (dolist (command '(scroll-up-command scroll-down-command
-                                       recenter-top-bottom other-window))
-    (advice-add command :after #'pulse-line)))
-
 (provide 'jh-ui)
 ;;; jh-ui.el ends here
