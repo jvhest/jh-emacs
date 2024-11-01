@@ -9,6 +9,7 @@
 
 ;;; Code:
 
+
 ;;; Settings
 
 (set-face-attribute 'default nil
@@ -37,18 +38,6 @@
 
 
 (use-package emacs
-  :preface
-  (defun toggle-transparency ()
-    "Toggle theme's transparency."
-    (interactive)
-    (let ((frame-alpha (frame-parameter nil 'alpha)))
-      (if (or (not frame-alpha)
-              (= (cadr frame-alpha) 100))
-          (set-frame-parameter nil 'alpha
-                               `(,my/frame-transparency
-                                 ,my/frame-transparency))
-        (set-frame-parameter nil 'alpha '(100 100)))))
-
   :hook
   (text-mode . variable-pitch-mode)
 
