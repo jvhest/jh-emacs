@@ -63,10 +63,10 @@
                           lisp-source-dir))
 
 ;;; Add all source and theme dirs to load-path
-(eval-and-compile
+;; (eval-and-compile
   (dolist (dir source-dirs)
     (add-to-list 'load-path dir t))
-  (add-to-list 'custom-theme-load-path themes-dir))
+  (add-to-list 'custom-theme-load-path my/themes-dir)
 
 ;;; Load core configuration files
 (require 'jh-ui)
