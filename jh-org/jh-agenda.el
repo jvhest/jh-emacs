@@ -40,8 +40,6 @@
   (add-to-list 'org-modules 'org-habit t)
   :config
   (setq org-agenda-files (list my/agenda-inbox
-                               my/agenda-birthdays
-                               my/agenda-repeat
                                my/agenda-notes)
 
         org-refile-targets '((nil :maxlevel . 9)
