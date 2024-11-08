@@ -8,7 +8,6 @@
 ;; Modules for init.el.
 
 ;;; Code:
-(message "core")
 
 (defvar my/themes-dir (expand-file-name "themes/" user-emacs-directory)
   "Location of themes files.")
@@ -19,7 +18,7 @@
 (defvar my/compile-on-save nil
   "When non-nil, compile the file after saving it.")
 
-(defvar my/compile-on-startup t
+(defvar my/compile-on-startup nil
   "When non-nil, compile EMACS LISP sources for the modules on startup.")
 
 
