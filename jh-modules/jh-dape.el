@@ -44,11 +44,11 @@
      ("Q" dape-quit "quit" :exit t))))
   :config
   ;; Save buffers on startup, useful for interpreted languages
-  (add-hook 'dape-on-start-hooks
+  (add-hook 'dape-on-start-hook
             (defun dape--save-on-start ()
               (save-some-buffers t t)))
   ;; Display hydra on startup
-  (add-hook 'dape-on-start-hooks #'dape-hydra/body))
+  (add-hook 'dape-on-start-hook #'dape-hydra/body))
 
 (provide 'jh-dape)
 ;;; jh-dape.el ends here
