@@ -42,7 +42,7 @@
   (setq native-comp-async-report-warnings-errors nil)
 
   ;; Make native compilation happens asynchronously
-  (setq native-comp-deferred-compilation t)
+  (setq native-comp-jit-compilation t)
 
   ;; Set the right directory to store the native compilation cache
   ;; NOTE the method for setting the eln-cache directory depends on the emacs version
@@ -74,6 +74,8 @@
 (use-package straight
   :custom
   (straight-use-package-by-default t))
+;; :init
+;; (setq use-package-expand-minimally t))
 
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-screen t)
@@ -94,9 +96,8 @@
 (set-face-attribute 'default nil :background "#000000" :foreground "#ffffff")
 (set-face-attribute 'mode-line nil :background "#000000" :foreground "#ffffff" :box 'unspecified)
 
-;; Always start with *scratch* buffer
-(setq initial-buffer-choice t)
-;; (customize-set-variable 'initial-major-mode 'fundamental-mode)  ;; for fast loading
+;; Don't start with *scratch* buffer if started with file(s) on command-line
+(setq initial-buffer-choice nil)
 (customize-set-variable 'initial-major-mode 'emacs-lisp-mode)  ;; for fast loading
 
 (provide 'early-init)
