@@ -22,6 +22,7 @@
 (add-to-list 'display-buffer-alist
              '((or (major-mode . Info-mode)
                    (major-mode . helpful-mode)
+                   (major-mode . help-mode)
                    (major-mode . occur-mode))
                (display-buffer-in-side-window)
                (side . right)
