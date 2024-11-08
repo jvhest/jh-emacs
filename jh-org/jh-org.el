@@ -41,7 +41,7 @@
         org-indent-mode-turns-on-hiding-stars t
         org-hide-emphasis-markers t               ;; Hides the symbols that makes text bold, italics
         org-src-window-setup 'current-window      ;; editing code snippet in current window
-        org-catch-invisible-edits 'smart          ;; Smart editing of hidden regions
+        org-fold-catch-invisible-edits 'smart          ;; Smart editing of hidden regions
         org-highlight-latex-and-related '(latex)  ;; Highlight LaTeX fragments, snippets etc
         org-pretty-entities t                     ;; Show entities as UTF8-characters when possible
         org-list-allow-alphabetical t             ;; Allow lists to be a) etc
