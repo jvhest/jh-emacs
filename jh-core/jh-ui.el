@@ -15,15 +15,15 @@
 (set-face-attribute 'default nil
                     :font "JetBrainsMono Nerd Font"
                     :weight 'light
-                    :height 110)
+                    :height 120)
 (set-face-attribute 'fixed-pitch nil
                     :font "JetBrainsMono Nerd Font"
                     :weight 'light
-                    :height 110)
+                    :height 120)
 (set-face-attribute 'variable-pitch nil
                     :font "JetBrainsMono Nerd Font"   ;; "Iosevka Comfy Motion Duo"
                     :weight 'light
-                    :height 110)
+                    :height 120)
 (set-face-attribute 'mode-line nil
                     :font "JetBrainsMono Nerd Font"
                     :weight 'semilight
